@@ -18,9 +18,6 @@ class GPIBInstrument(object):
                     for i in range(0, num)]
         return float(self.instr.read())
 
-    def available(self):
-        raise NotImplementedError
-        
     def __enter__(self):
         self.instr = visa.instrument("GPIB::{0}".format(self.gpib_id))
         self.instr.write('G1')
