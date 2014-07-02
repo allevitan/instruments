@@ -18,6 +18,9 @@ class GPIBInstrument(object):
                     for i in range(0, num)]
         return float(self.instr.read())
 
+    def write(self, data):
+        self.instr.write(data)
+
     def __enter__(self):
         self.instr = visa.instrument("GPIB::{0}".format(self.gpib_id))
         self.instr.write('G1')
@@ -31,7 +34,7 @@ class GPIBInstrument(object):
 
 class SerialInstrument(object):
 
-    def __init__(self, port, baud=115200):
+    def __init__(self, port, baud=19200):
         self.port = port
         self.baud = baud
 
@@ -44,6 +47,9 @@ class SerialInstrument(object):
             pass
         return self.instr.read()
         
+    def write(self, data):
+        self.instr.write(data)
+
     def __enter__(self):
         self.instr = Serial(self.port, self.baud)
         self.instr.open()
@@ -126,4 +132,11 @@ class Encoder(SerialInstrument):
         else:
             return self.process_raw(super(Encoder, self).read(2))[0]
 
-        
+
+class Heater(SerialInstrument):
+    
+    def on(self):
+        self.write(bytearray([1])
+    
+    def off(self):
+        self.write(bytearray([2]))

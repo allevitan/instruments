@@ -26,20 +26,25 @@ _Voltmeter_, _Ammeter_, _Encoder_, _SerialInstrument_, and _GPIBInstrument_ impl
 
 _Oscilloscope_ is fundamentally different - calling `scope.read(channels)` will return current data from each channel in _channels_.
 
+_Heater_, the heater for the heat capacity of copper lab, is also different. It has two methods, `heater.on()` and `heater.off()` which do exactly what you'd expect.
+
 ## Examples
 
 * Print the next 100 readings from an ammeter:
 ```python
 from instruments import Ammeter
+
 with Ammeter(6) as amp: #ammeter on GPIB bus 6
 	print(amp.read(100))
 ```
-* plot data channels 1 and 3 from an oscilloscope:
+* Plot channels 1 and 3 from an oscilloscope:
 ```python
 from instruments import Oscilloscope
 from matplotlib.pyplot import *
+
 with Oscilloscope() as scope:
 	data = scope.read([1,3])
+
 plot(data['time'],data[1])
 plot(data['time'],data[3])
 show()
